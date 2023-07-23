@@ -17,6 +17,7 @@ export default function Login() {
                 src={sessionData.user.image ?? ""}
                 alt={sessionData.user.name ?? "username"}
                 fill
+                sizes="100%"
                 style={{
                   objectFit: "cover",
                 }}

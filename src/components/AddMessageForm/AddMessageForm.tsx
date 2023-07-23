@@ -1,18 +1,18 @@
 import * as React from "react";
 import { useSession } from "next-auth/react";
 import Login from "../Login";
+import type { MessageCreateInput } from "@/utils/useMessage";
 
 type AddMessageFormProps = {
-  onSubmit?: () => void;
+  onSubmit?: (arg0: MessageCreateInput) => void;
 };
 
 export default function AddMessageForm({ onSubmit }: AddMessageFormProps) {
   const { data: sessionData } = useSession();
   const [message, setMessage] = React.useState("");
   const postMessage = () => {
-    console.log({ message });
+    onSubmit && onSubmit({ text: message });
     setMessage("");
-    onSubmit && onSubmit();
   };
 
   const isLogin = sessionData?.user !== undefined;
@@ -39,7 +39,9 @@ export default function AddMessageForm({ onSubmit }: AddMessageFormProps) {
                 name="text"
                 id="text"
                 rows={rows}
-                placeholder="Text Message"
+                placeholder={
+                  isLogin ? "Text Message" : "Please sign in first 👉"
+                }
                 autoFocus
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}

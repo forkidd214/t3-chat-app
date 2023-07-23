@@ -1,22 +1,23 @@
 import * as React from "react";
 import Image from "next/image";
+import type { MessageList } from "@/utils/useMessage";
 
-type Message = {
-  id: string;
-  text: string;
-  createdAt: string;
-  user?: {
-    id: string;
-    name: string;
-    image: string;
-  };
-};
+// type Message = {
+//   id: string;
+//   text: string;
+//   createdAt: string;
+//   user?: {
+//     id: string;
+//     name: string;
+//     image: string;
+//   };
+// };
 
 type MessageListProps = {
-  messages?: Message[];
+  messages: MessageList;
 };
 
-export default function MessageList({ messages = MESSAGES }: MessageListProps) {
+export default function MessageList({ messages = [] }: MessageListProps) {
   const scrollTargetRef = React.useRef<HTMLDivElement>(null);
 
   const scrollToBottomOfList = React.useCallback(() => {
@@ -58,6 +59,7 @@ export default function MessageList({ messages = MESSAGES }: MessageListProps) {
                       src={msg.user?.image ?? ""}
                       alt={msg.user?.name ?? "username"}
                       fill
+                      sizes="100%"
                       style={{
                         objectFit: "cover",
                       }}
@@ -77,13 +79,8 @@ export default function MessageList({ messages = MESSAGES }: MessageListProps) {
   );
 }
 
-function isTimeSpanLessThan5Minutes(
-  dateString1?: string,
-  dateString2?: string
-) {
-  if (dateString1 === undefined || dateString2 === undefined) return false;
-  const date1 = new Date(dateString1);
-  const date2 = new Date(dateString2);
+function isTimeSpanLessThan5Minutes(date1?: Date, date2?: Date) {
+  if (date1 === undefined || date2 === undefined) return false;
 
   const timeDifference = Math.abs(date1.getTime() - date2.getTime());
   const fiveMinutesInMillis = 5 * 60 * 1000; // 5 minutes in milliseconds
@@ -91,9 +88,7 @@ function isTimeSpanLessThan5Minutes(
   return timeDifference < fiveMinutesInMillis;
 }
 
-function formatTime(dateString: string) {
-  const date = new Date(dateString);
-
+function formatTime(date: Date) {
   const dayOfWeek = date.toLocaleString("en-US", { weekday: "short" });
   const day = date.toLocaleString("en-US", { day: "numeric" });
   const month = date.toLocaleString("en-US", { month: "short" });
@@ -106,6 +101,7 @@ function formatTime(dateString: string) {
   return `${dayOfWeek}, ${day} ${month} ${year} at ${time}`;
 }
 
+/*
 const MESSAGES: Message[] = [
   {
     id: "063cdf60-2253-4480-9f20-a6fc226c02b3",
@@ -208,3 +204,4 @@ const MESSAGES: Message[] = [
     },
   },
 ];
+*/

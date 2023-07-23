@@ -1,10 +1,22 @@
 import Head from "next/head";
 import MessageList from "@/components/MessageList";
 import AddMessageForm from "@/components/AddMessageForm";
-// import { api } from "@/utils/api";
+import { useMessageList, useMessageCreate } from "@/utils/useMessage";
 
 export default function Home() {
-  //const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  const {
+    data: messages,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useMessageList();
+  const { mutate: createMessage } = useMessageCreate({
+    onSuccess: () => refetch(),
+  });
+
+  if (isLoading) return <span>Loading...</span>;
+  if (isError) throw new Error(error.message);
 
   return (
     <>
@@ -14,11 +26,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex h-full flex-col rounded-2xl bg-black">
-        <MessageList />
-        <AddMessageForm />
-        {/* <div className="mt-auto">
-          <p>{hello.data ? hello.data.greeting : "Loading tRPC query..."}</p>
-        </div> */}
+        <MessageList messages={messages} />
+        <AddMessageForm onSubmit={createMessage} />
       </div>
     </>
   );

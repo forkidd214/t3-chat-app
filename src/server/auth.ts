@@ -17,6 +17,7 @@ import { prisma } from "@/server/db";
  * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
  */
 declare module "next-auth" {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
   interface Session extends DefaultSession {
     user: DefaultSession["user"] & {
       id: string;

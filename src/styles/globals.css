@@ -26,7 +26,6 @@
       background-color: var(--scrollbar-background);
     }
     ::-webkit-scrollbar-thumb {
-      height: 50px;
       border-radius: 1000px;
       background-color: var(--scrollbar-thumb);
       border: 2px solid var(--scrollbar-background);
