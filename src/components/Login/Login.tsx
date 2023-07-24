@@ -1,6 +1,7 @@
 import * as React from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import UserAvatar from "../UserAvatar";
 
 export default function Login() {
   const { data: sessionData } = useSession();
@@ -16,19 +17,24 @@ export default function Login() {
       >
         <span className="font-mono text-lg italic">
           {isLogin ? (
-            <div className="relative -ml-1 flex h-6 w-6 place-content-center overflow-hidden rounded-full bg-transparent">
-              <Image
-                className="brightness-125"
-                src={sessionData.user.image ?? ""}
-                alt={sessionData.user.name ?? "username"}
-                fill
-                sizes="100%"
-                style={{
-                  objectFit: "cover",
-                }}
-              />
-            </div>
-          ) : null}
+            <UserAvatar
+              className="-ml-1"
+              src={sessionData.user.image ?? ""}
+              alt={sessionData.user.name ?? "username"}
+            />
+          ) : // <div className="relative -ml-1 flex h-6 w-6 place-content-center overflow-hidden rounded-full bg-transparent">
+          //   <Image
+          //     className="brightness-125"
+          //     src={sessionData.user.image ?? ""}
+          //     alt={sessionData.user.name ?? "username"}
+          //     fill
+          //     sizes="100%"
+          //     style={{
+          //       objectFit: "cover",
+          //     }}
+          //   />
+          // </div>
+          null}
         </span>
         <span>{isLogin ? "Sign out" : "Sign in"}</span>
       </button>
