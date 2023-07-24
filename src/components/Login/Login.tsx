@@ -7,11 +7,16 @@ export default function Login() {
   const isLogin = sessionData?.user !== undefined;
 
   return (
-    <div className="flex items-center gap-2">
-      <div>
+    <div className="">
+      <button
+        className={`flex items-center justify-between gap-1 rounded-full px-2 py-1  ${
+          isLogin ? "bg-zinc-900 text-zinc-400" : "bg-green-700 text-zinc-50"
+        }`}
+        onClick={isLogin ? () => void signOut() : () => void signIn()}
+      >
         <span className="font-mono text-lg italic">
           {isLogin ? (
-            <div className="relative flex h-10 w-10 place-content-center overflow-hidden rounded-full bg-zinc-900 ">
+            <div className="relative -ml-1 flex h-6 w-6 place-content-center overflow-hidden rounded-full bg-transparent">
               <Image
                 className="brightness-125"
                 src={sessionData.user.image ?? ""}
@@ -23,18 +28,9 @@ export default function Login() {
                 }}
               />
             </div>
-          ) : (
-            ""
-          )}
+          ) : null}
         </span>
-      </div>
-      <button
-        className={`rounded-lg px-2 py-1  ${
-          isLogin ? "bg-zinc-800 opacity-50" : "bg-green-700"
-        }`}
-        onClick={isLogin ? () => void signOut() : () => void signIn()}
-      >
-        {isLogin ? "Sign out" : "Sign in"}
+        <span>{isLogin ? "Sign out" : "Sign in"}</span>
       </button>
     </div>
   );

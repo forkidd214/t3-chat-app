@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import type { MessageList } from "@/utils/useMessage";
 
@@ -18,8 +19,14 @@ type MessageListProps = {
 };
 
 export default function MessageList({ messages = [] }: MessageListProps) {
-  const scrollTargetRef = React.useRef<HTMLDivElement>(null);
+  const { data: sessionData } = useSession();
+  const currentUser = sessionData?.user;
 
+  /**
+   * scroll to the bottom of list onMount or once messages are updated
+   *
+   */
+  const scrollTargetRef = React.useRef<HTMLDivElement>(null);
   const scrollToBottomOfList = React.useCallback(() => {
     if (!scrollTargetRef.current) {
       return;
@@ -36,11 +43,11 @@ export default function MessageList({ messages = [] }: MessageListProps) {
   }, [scrollToBottomOfList, messages.length]);
 
   return (
-    <section className="relative isolate flex h-full flex-col overflow-hidden rounded-t-lg">
-      <div className="absolute left-0 right-0 top-0 z-10 flex place-content-center rounded-t-lg bg-zinc-800/70 p-4 backdrop-blur-md">
-        <h2 className="text-xl">Roar Square</h2>
+    <section className="relative isolate flex h-full flex-col overflow-hidden rounded-t-2xl">
+      <div className="absolute left-0 right-0 top-0 z-10 flex place-content-center  bg-zinc-900/70 py-2 backdrop-blur-md">
+        <h2 className="font-mono text-xl">Roar Square</h2>
       </div>
-      <div className="h-full overflow-auto scroll-smooth px-4 pt-16">
+      <div className="h-full overflow-auto scroll-smooth px-2 pt-12">
         <ol className="flex flex-col gap-1">
           {messages.map((msg, index, msgs) => (
             <li key={msg.id}>
@@ -53,8 +60,14 @@ export default function MessageList({ messages = [] }: MessageListProps) {
                     {formatTime(msg.createdAt)}
                   </div>
                 )}
-                <div className="flex gap-2">
-                  <div className="relative flex h-10 w-10 place-content-center overflow-hidden rounded-full bg-zinc-800 p-2">
+                <div
+                  className={`flex items-start justify-start gap-2 ${
+                    currentUser?.id === msg.user.id
+                      ? "flex-row-reverse"
+                      : "flex-row"
+                  }`}
+                >
+                  <div className="relative flex h-8 w-8 place-content-center overflow-hidden rounded-full bg-zinc-900 p-2">
                     <Image
                       src={msg.user?.image ?? ""}
                       alt={msg.user?.name ?? "username"}
@@ -65,8 +78,14 @@ export default function MessageList({ messages = [] }: MessageListProps) {
                       }}
                     />
                   </div>
-                  <div className="w-fit max-w-lg rounded-lg bg-zinc-800 px-3 py-2 text-justify">
-                    <p className="text-lg">{msg.text}</p>
+                  <div
+                    className={`w-fit max-w-lg rounded-2xl  px-2 py-1 ${
+                      currentUser?.id === msg.user.id
+                        ? "bg-green-900 "
+                        : "bg-zinc-900"
+                    } `}
+                  >
+                    <p className="text-md">{msg.text}</p>
                   </div>
                 </div>
               </article>

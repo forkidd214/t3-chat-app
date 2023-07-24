@@ -20,49 +20,59 @@ export default function AddMessageForm({ onSubmit }: AddMessageFormProps) {
     message.split(/\r|\n/).length < 10 ? message.split(/\r|\n/).length : 10;
 
   return (
-    <section className="rounded-b-lg p-4 ring-offset-4">
-      <div className="">
-        <form
-          action="submit"
-          onSubmit={(e) => {
-            e.preventDefault();
-            postMessage();
-          }}
-        >
-          <fieldset>
-            <div className="flex items-end justify-between gap-16 ">
-              <textarea
-                disabled={!isLogin}
-                className={`flex-1 resize-none border border-solid border-zinc-500 bg-transparent px-4 py-3 ${
-                  rows === 1 ? "rounded-full" : "rounded-lg"
+    <section className="rounded-b-lg p-2 ring-offset-4">
+      <form
+        action="submit"
+        onSubmit={(e) => {
+          e.preventDefault();
+          postMessage();
+        }}
+      >
+        <fieldset className="relative block">
+          <textarea
+            disabled={!isLogin}
+            className={`block w-full resize-none border-2 border-solid border-zinc-800 bg-transparent py-2 pl-4 pr-12 ${
+              rows === 1 ? "rounded-full" : "rounded-2xl"
+            }
+                `}
+            name="text"
+            id="text"
+            rows={rows}
+            placeholder={isLogin ? "Text Message" : "Please log in first  👉"}
+            autoFocus
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+          <div className="absolute bottom-1 right-1.5">
+            {isLogin ? (
+              <button
+                className={`aspect-square h-8 rounded-full p-1 ${
+                  message ? "bg-green-700" : "bg-transparent  opacity-30"
                 }`}
-                name="text"
-                id="text"
-                rows={rows}
-                placeholder={
-                  isLogin ? "Text Message" : "Please sign in first 👉"
-                }
-                autoFocus
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-              />
-              {isLogin ? (
-                <button
-                  className={`rounded-lg bg-green-700 px-2 py-1 ${
-                    message ? "" : "opacity-50"
-                  }`}
-                  type="submit"
-                  disabled={!message}
+                type="submit"
+                disabled={!message}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  className="h-full w-full"
                 >
-                  Submit
-                </button>
-              ) : (
+                  <path
+                    fillRule="evenodd"
+                    d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+            ) : (
+              <div className="mb-0.5">
                 <Login />
-              )}
-            </div>
-          </fieldset>
-        </form>
-      </div>
+              </div>
+            )}
+          </div>
+        </fieldset>
+      </form>
     </section>
   );
 }
