@@ -5,6 +5,7 @@ import {
   type NextAuthOptions,
   type DefaultSession,
 } from "next-auth";
+import EmailProvider from "next-auth/providers/email";
 import DiscordProvider from "next-auth/providers/discord";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { env } from "@/env.mjs";
@@ -32,7 +33,7 @@ declare module "next-auth" {
   // }
 }
 
-const useMockProvider = process.env.NODE_ENV !== "production";
+const useMockProvider = process.env.NODE_ENV === "test";
 const mockProvider = CredentialsProvider({
   id: "github",
   name: "Mocked GitHub",
@@ -53,6 +54,10 @@ const mockProvider = CredentialsProvider({
 });
 
 const providers: NextAuthOptions["providers"] = [
+  EmailProvider({
+    server: env.EMAIL_SERVER,
+    from: env.EMAIL_FROM,
+  }),
   DiscordProvider({
     clientId: env.DISCORD_CLIENT_ID,
     clientSecret: env.DISCORD_CLIENT_SECRET,
@@ -78,6 +83,7 @@ if (useMockProvider) {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
+  secret: env.NEXTAUTH_SECRET,
   callbacks: {
     session: ({ session, user }) => ({
       ...session,
