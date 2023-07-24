@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useSession } from "next-auth/react";
-// import Image from "next/image";
 import type { MessageList } from "@/utils/useMessage";
 import UserAvatar from "@/components/UserAvatar";
 
@@ -68,17 +67,6 @@ export default function MessageList({ messages = [] }: MessageListProps) {
                       : "flex-row"
                   }`}
                 >
-                  {/* <div className="relative flex h-8 w-8 place-content-center overflow-hidden rounded-full bg-zinc-900 p-2">
-                    <Image
-                      src={msg.user?.image ?? ""}
-                      alt={msg.user?.name ?? "username"}
-                      fill
-                      sizes="100%"
-                      style={{
-                        objectFit: "cover",
-                      }}
-                    />
-                  </div> */}
                   <UserAvatar
                     className="h-8 bg-zinc-900"
                     src={msg.user?.image ?? ""}

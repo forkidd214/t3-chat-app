@@ -1,6 +1,5 @@
 import * as React from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
-import Image from "next/image";
 import UserAvatar from "../UserAvatar";
 
 export default function Login() {
@@ -22,19 +21,7 @@ export default function Login() {
               src={sessionData.user.image ?? ""}
               alt={sessionData.user.name ?? "username"}
             />
-          ) : // <div className="relative -ml-1 flex h-6 w-6 place-content-center overflow-hidden rounded-full bg-transparent">
-          //   <Image
-          //     className="brightness-125"
-          //     src={sessionData.user.image ?? ""}
-          //     alt={sessionData.user.name ?? "username"}
-          //     fill
-          //     sizes="100%"
-          //     style={{
-          //       objectFit: "cover",
-          //     }}
-          //   />
-          // </div>
-          null}
+          ) : null}
         </span>
         <span>{isLogin ? "Sign out" : "Sign in"}</span>
       </button>
