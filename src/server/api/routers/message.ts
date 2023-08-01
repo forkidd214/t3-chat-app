@@ -4,6 +4,9 @@ import {
   publicProcedure,
   protectedProcedure,
 } from "@/server/api/trpc";
+import { pusherServer } from "@/server/pusher";
+import { NEW_MESSAGE_EVENT, MESSAGE_CHANNEL } from "@/utils/pusher";
+import cuid from "cuid";
 
 export const messageRouter = createTRPCRouter({
   list: publicProcedure.query(async ({ ctx }) => {
@@ -26,33 +29,36 @@ export const messageRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { prisma, session } = ctx;
       const { text } = input;
-      const id = session?.user.id;
+      const { user } = session;
+
+      const newMessage = {
+        id: cuid(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        text,
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          image: user.image,
+        },
+      };
+
+      // notify all clients subscribed to MESSAGE_CHANNEL
+      void pusherServer.trigger(MESSAGE_CHANNEL, NEW_MESSAGE_EVENT, newMessage);
 
       return await prisma.message.create({
         data: {
-          text,
+          ...newMessage,
           user: {
             connect: {
-              id,
+              id: user.id,
             },
           },
         },
+        include: {
+          user: true,
+        },
       });
     }),
-
-  // hello: publicProcedure
-  //   .input(z.object({ text: z.string() }))
-  //   .query(({ input }) => {
-  //     return {
-  //       greeting: `Hello ${input.text}`,
-  //     };
-  //   }),
-
-  // getAll: publicProcedure.query(({ ctx }) => {
-  //   return ctx.prisma.example.findMany();
-  // }),
-
-  // getSecretMessage: protectedProcedure.query(() => {
-  //   return "you can now see this secret message!";
-  // }),
 });
