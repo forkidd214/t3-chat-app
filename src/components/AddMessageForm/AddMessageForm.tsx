@@ -5,15 +5,29 @@ import type { MessageCreateInput } from "@/utils/useMessage";
 
 type AddMessageFormProps = {
   onSubmit?: (arg0: MessageCreateInput) => void;
+  onTypingChange?: ({ isTyping }: { isTyping: boolean }) => void;
 };
 
-export default function AddMessageForm({ onSubmit }: AddMessageFormProps) {
+export default function AddMessageForm({
+  onSubmit,
+  onTypingChange,
+}: AddMessageFormProps) {
   const { data: sessionData } = useSession();
   const [message, setMessage] = React.useState("");
+  const [isTyping, setIsTyping] = React.useState<boolean>(false);
+  const typingTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
   const postMessage = () => {
     onSubmit && onSubmit({ text: message });
     setMessage("");
+    setIsTyping(false);
   };
+
+  /**
+   * Only emit typing event when isTyping state change
+   */
+  React.useEffect(() => {
+    onTypingChange && onTypingChange({ isTyping });
+  }, [isTyping, onTypingChange]);
 
   const isLogin = sessionData?.user !== undefined;
   const rows =
@@ -41,7 +55,27 @@ export default function AddMessageForm({ onSubmit }: AddMessageFormProps) {
             placeholder={isLogin ? "Text Message" : "Please log in first  👉"}
             autoFocus
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={(e) => {
+              setMessage(e.target.value);
+
+              if (e.target.value === "") {
+                setIsTyping(false);
+              }
+            }}
+            onKeyDown={() => {
+              setIsTyping(true);
+
+              /**
+               * if no key has been pressed since the last 30s,
+               * then set isTyping to false
+               */
+              typingTimeoutRef.current &&
+                clearTimeout(typingTimeoutRef.current);
+              typingTimeoutRef.current = setTimeout(() => {
+                setIsTyping(false);
+              }, 30 * 1000);
+            }}
+            onBlur={() => setIsTyping(false)}
           />
           <div className="absolute bottom-1 right-1.5">
             {isLogin ? (

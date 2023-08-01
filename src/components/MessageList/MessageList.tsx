@@ -5,9 +5,13 @@ import UserAvatar from "@/components/UserAvatar";
 
 type MessageListProps = {
   messages: MessageList;
+  currentlyTyping: string[];
 };
 
-export default function MessageList({ messages = [] }: MessageListProps) {
+export default function MessageList({
+  messages = [],
+  currentlyTyping = [],
+}: MessageListProps) {
   const { data: sessionData } = useSession();
   const currentUser = sessionData?.user;
 
@@ -29,7 +33,7 @@ export default function MessageList({ messages = [] }: MessageListProps) {
 
   React.useEffect(() => {
     messages.length > 0 && scrollToBottomOfList();
-  }, [scrollToBottomOfList, messages.length]);
+  }, [scrollToBottomOfList, messages.length, currentlyTyping.length]);
 
   return (
     <section className="relative isolate flex h-full flex-col overflow-hidden rounded-t-2xl">
@@ -74,8 +78,15 @@ export default function MessageList({ messages = [] }: MessageListProps) {
               </article>
             </li>
           ))}
-          <div ref={scrollTargetRef} />
         </ol>
+        <div>
+          {currentlyTyping.length ? (
+            <p className="mt-1 px-2 py-1 font-mono text-sm text-zinc-500 ">
+              {currentlyTyping.join(", ")} typing...
+            </p>
+          ) : null}
+        </div>
+        <div ref={scrollTargetRef} />
       </div>
     </section>
   );

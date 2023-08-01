@@ -5,7 +5,11 @@ import {
   protectedProcedure,
 } from "@/server/api/trpc";
 import { pusherServer } from "@/server/pusher";
-import { NEW_MESSAGE_EVENT, MESSAGE_CHANNEL } from "@/utils/pusher";
+import {
+  NEW_MESSAGE_EVENT,
+  MESSAGE_TYPING_EVENT,
+  MESSAGE_CHANNEL,
+} from "@/utils/pusher";
 import cuid from "cuid";
 
 export const messageRouter = createTRPCRouter({
@@ -59,6 +63,22 @@ export const messageRouter = createTRPCRouter({
         include: {
           user: true,
         },
+      });
+    }),
+
+  typing: protectedProcedure
+    .input(
+      z.object({
+        isTyping: z.boolean(),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      const { user } = ctx.session;
+      const { isTyping } = input;
+
+      void pusherServer.trigger(MESSAGE_CHANNEL, MESSAGE_TYPING_EVENT, {
+        username: user.name ?? "anonymous",
+        isTyping,
       });
     }),
 });

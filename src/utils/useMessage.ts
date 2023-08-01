@@ -29,9 +29,12 @@ const useMessageList = (opts?: MessageOptions<"list">) =>
 const useMessageCreate = (opts?: MessageOptions<"create">) =>
   api.message.create.useMutation(opts);
 
+const useMessageTyping = (opts?: MessageOptions<"typing">) =>
+  api.message.typing.useMutation(opts);
+
 /**
  * export types and hooks
  *
  */
 export type { MessageList, MessageCreateInput };
-export { useMessageList, useMessageCreate };
+export { useMessageList, useMessageCreate, useMessageTyping };
