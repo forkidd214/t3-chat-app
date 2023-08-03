@@ -10,7 +10,6 @@ import {
   MESSAGE_TYPING_EVENT,
   MESSAGE_CHANNEL,
 } from "@/utils/pusher";
-import cuid from "cuid";
 
 export const messageRouter = createTRPCRouter({
   list: publicProcedure.query(async ({ ctx }) => {
@@ -31,29 +30,15 @@ export const messageRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const { prisma, session } = ctx;
+      const {
+        prisma,
+        session: { user },
+      } = ctx;
       const { text } = input;
-      const { user } = session;
 
-      const newMessage = {
-        id: cuid(),
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        text,
-        user: {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          image: user.image,
-        },
-      };
-
-      // notify all clients subscribed to MESSAGE_CHANNEL
-      void pusherServer.trigger(MESSAGE_CHANNEL, NEW_MESSAGE_EVENT, newMessage);
-
-      return await prisma.message.create({
+      const newMessage = await prisma.message.create({
         data: {
-          ...newMessage,
+          text,
           user: {
             connect: {
               id: user.id,
@@ -64,6 +49,11 @@ export const messageRouter = createTRPCRouter({
           user: true,
         },
       });
+
+      // notify all clients subscribed to MESSAGE_CHANNEL
+      void pusherServer.trigger(MESSAGE_CHANNEL, NEW_MESSAGE_EVENT, newMessage);
+
+      return newMessage;
     }),
 
   typing: protectedProcedure

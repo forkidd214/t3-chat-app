@@ -38,7 +38,7 @@ export default function MessageList({
   return (
     <section className="relative isolate flex h-full flex-col overflow-hidden rounded-t-2xl">
       <div className="absolute left-0 right-0 top-0 z-10 flex place-content-center  bg-zinc-900/70 py-2 backdrop-blur-md">
-        <h2 className="font-mono text-xl">Roar Square</h2>
+        <h2 className="font-mono text-xl">Public Hall</h2>
       </div>
       <div className="h-full overflow-auto scroll-smooth px-2 pt-12">
         <ol className="flex flex-col gap-1">
