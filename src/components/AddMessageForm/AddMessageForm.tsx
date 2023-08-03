@@ -80,6 +80,7 @@ export default function AddMessageForm({
           <div className="absolute bottom-1 right-1.5">
             {isLogin ? (
               <button
+                aria-label="send"
                 className={`aspect-square h-8 rounded-full p-1 ${
                   message ? "bg-green-700" : "bg-transparent  opacity-30"
                 }`}
