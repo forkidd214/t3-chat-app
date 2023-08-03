@@ -4,6 +4,12 @@
  */
 await import("./src/env.mjs");
 
+import WithPWA from "next-pwa";
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+const withPWA = WithPWA({
+  dest: "public",
+});
+
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
@@ -37,4 +43,5 @@ const config = {
   },
 };
 
-export default config;
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+export default withPWA(config);
