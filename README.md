@@ -1,28 +1,27 @@
-# Create T3 App
+# T3 Chat App
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+Realtime Chat App for Learning: This small project provides a contrived yet practical environment for learning real-time chatting concepts. Enhance your skills in a fun and educational way.
 
-## What's next? How do I make an app with this?
+## How do I make an app with this?
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+If you are not familiar with the different technologies used in this project, please refer to the respective docs.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
-
+- [T3 Stack](https://create.t3.gg/)
 - [Next.js](https://nextjs.org)
 - [NextAuth.js](https://next-auth.js.org)
 - [Prisma](https://prisma.io)
 - [Tailwind CSS](https://tailwindcss.com)
 - [tRPC](https://trpc.io)
+- [Pusher](https://pusher.com/)
+- [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
 
-## Learn More
+## License
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+This work is licensed under a
+[Creative Commons Attribution 4.0 International License][cc-by].
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+[![CC BY 4.0][cc-by-image]][cc-by]
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+[cc-by]: http://creativecommons.org/licenses/by/4.0/
+[cc-by-image]: https://i.creativecommons.org/l/by/4.0/88x31.png
+[cc-by-shield]: https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg
