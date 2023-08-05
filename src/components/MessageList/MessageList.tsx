@@ -32,7 +32,7 @@ export default function MessageList({
   }, []);
 
   React.useEffect(() => {
-    messages.length > 0 && scrollToBottomOfList();
+    scrollToBottomOfList();
   }, [scrollToBottomOfList, messages.length, currentlyTyping.length]);
 
   return (

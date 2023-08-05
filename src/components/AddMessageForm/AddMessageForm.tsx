@@ -22,7 +22,10 @@ export default function AddMessageForm({
     setIsTyping(false);
   };
 
-  const isLogin = sessionData?.user !== undefined;
+  const isLogin = React.useMemo(
+    () => sessionData?.user !== undefined,
+    [sessionData]
+  );
   const rows =
     message.split(/\r|\n/).length < 10 ? message.split(/\r|\n/).length : 10;
 
@@ -30,8 +33,8 @@ export default function AddMessageForm({
    * Only emit typing event when isTyping state change
    */
   React.useEffect(() => {
-    sessionData?.user && onTypingChange && onTypingChange({ isTyping });
-  }, [sessionData, isTyping, onTypingChange]);
+    isLogin && onTypingChange && onTypingChange({ isTyping });
+  }, [isLogin, isTyping, onTypingChange]);
 
   return (
     <section className="rounded-b-lg p-2 ring-offset-4">
