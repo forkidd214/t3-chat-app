@@ -76,7 +76,7 @@ export default function Home() {
       const { username, isTyping } = typingEvent;
       setCurrentlyTyping((prevCurrentlyTyping) =>
         isTyping
-          ? [...prevCurrentlyTyping, username]
+          ? [...new Set([...prevCurrentlyTyping, username])]
           : prevCurrentlyTyping.filter((name) => name !== username)
       );
     };
