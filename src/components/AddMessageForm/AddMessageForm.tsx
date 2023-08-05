@@ -30,8 +30,8 @@ export default function AddMessageForm({
    * Only emit typing event when isTyping state change
    */
   React.useEffect(() => {
-    isLogin && onTypingChange && onTypingChange({ isTyping });
-  }, [isLogin, isTyping, onTypingChange]);
+    sessionData?.user && onTypingChange && onTypingChange({ isTyping });
+  }, [sessionData, isTyping, onTypingChange]);
 
   return (
     <section className="rounded-b-lg p-2 ring-offset-4">
