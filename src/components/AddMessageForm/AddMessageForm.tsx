@@ -22,16 +22,16 @@ export default function AddMessageForm({
     setIsTyping(false);
   };
 
+  const isLogin = sessionData?.user !== undefined;
+  const rows =
+    message.split(/\r|\n/).length < 10 ? message.split(/\r|\n/).length : 10;
+
   /**
    * Only emit typing event when isTyping state change
    */
   React.useEffect(() => {
-    onTypingChange && onTypingChange({ isTyping });
-  }, [isTyping, onTypingChange]);
-
-  const isLogin = sessionData?.user !== undefined;
-  const rows =
-    message.split(/\r|\n/).length < 10 ? message.split(/\r|\n/).length : 10;
+    isLogin && onTypingChange && onTypingChange({ isTyping });
+  }, [isLogin, isTyping, onTypingChange]);
 
   return (
     <section className="rounded-b-lg p-2 ring-offset-4">
