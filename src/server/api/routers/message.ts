@@ -51,7 +51,11 @@ export const messageRouter = createTRPCRouter({
       });
 
       // notify all clients subscribed to MESSAGE_CHANNEL
-      void pusherServer.trigger(MESSAGE_CHANNEL, NEW_MESSAGE_EVENT, newMessage);
+      await pusherServer.trigger(
+        MESSAGE_CHANNEL,
+        NEW_MESSAGE_EVENT,
+        newMessage
+      );
 
       return newMessage;
     }),
@@ -62,11 +66,12 @@ export const messageRouter = createTRPCRouter({
         isTyping: z.boolean(),
       })
     )
-    .mutation(({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
       const { user } = ctx.session;
       const { isTyping } = input;
 
-      void pusherServer.trigger(MESSAGE_CHANNEL, MESSAGE_TYPING_EVENT, {
+      // must await, otherwise vercel serverless function may not perform it
+      await pusherServer.trigger(MESSAGE_CHANNEL, MESSAGE_TYPING_EVENT, {
         username: user.name ?? "anonymous",
         isTyping,
       });
